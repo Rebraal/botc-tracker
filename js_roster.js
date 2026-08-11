@@ -31,7 +31,7 @@ function handleRosterDrop(e) {
   let targetIdx = parseInt(this.dataset.index, 10);
   if (isNaN(srcIdx) || srcIdx === targetIdx) return;
   
-  let item = state.players.splice(srcIdx, 1)[0];
+  let item = state.players.splice(srcIdx, 1);
   state.players.splice(targetIdx, 0, item);
   syncUI();
   persistData();
@@ -49,8 +49,30 @@ function addPlayerFromInput() {
 function deletePlayerRow(idx) { state.players.splice(idx, 1); syncUI(); persistData(); }
 function toggleTravelerStatus(idx) { state.players[idx].traveler = !state.players[idx].traveler; syncUI(); persistData(); }
 
+function triggerRestartGame() {
+  state.votes = [];
+  state.currentDay = 1;
+  state.nominatorToday = [];
+  state.nomineeToday = [];
+  state.players.forEach(p => {
+    p.status = 'ALIVE';
+    p.deadVoteUsed = false;
+  });
+  if (typeof resetNominationState === 'function') {
+    resetNominationState();
+  }
+  updateNotification("Game restarted. Roster kept, data reset.");
+  syncUI();
+  persistData();
+}
+
 function triggerNewGame() {
-  state = { players: [], votes: [], currentDay: 1, setupMode: true, nominationState: 'IDLE' };
+  state = { players: [], votes: [], currentDay: 1, setupMode: true, nominationState: 'IDLE', nominatorToday: [], nomineeToday: [] };
   localStorage.removeItem('botc_tracker_state');
-  resetNominationState(); setSetupMode(true); syncUI();
+  if (typeof resetNominationState === 'function') {
+    resetNominationState();
+  }
+  setSetupMode(true);
+  updateNotification("New game space completely wiped clean.");
+  syncUI();
 }
