@@ -36,10 +36,19 @@ function handleTokenClick(player, idx) {
 }
 
 function handleNominateClickEnd() {
+  // Capture historical track flags into persistent daily cache blocks before wipeout
+  if (state.activeNominator && !state.nominatorToday.includes(state.activeNominator)) {
+    state.nominatorToday.push(state.activeNominator);
+  }
+  if (state.activeNominee && !state.nomineeToday.includes(state.activeNominee)) {
+    state.nomineeToday.push(state.activeNominee);
+  }
+
   state.activeVoters.forEach(vName => {
     let pObj = state.players.find(p => p.name === vName);
     if (pObj && pObj.status === 'DEAD') pObj.deadVoteUsed = true;
   });
+
   state.votes.push({
     day: state.currentDay, nominator: state.activeNominator,
     nominee: state.activeNominee, count: state.activeVoters.length, voters: [...state.activeVoters]
@@ -74,6 +83,8 @@ function evaluateBlockLeader() {
 
 function triggerNextDay() {
   state.currentDay += 1;
+  state.nominatorToday = [];
+  state.nomineeToday = [];
   syncUI();
   persistData();
 }
