@@ -61,15 +61,15 @@ function recalculateThresholdAndComposition() {
   let c = { townsfolk: 0, outsider: 0, minion: 0, demon: 0 };
   
   const lookup = {
-    5:, 6:, 7:,
-    8:, 9:, 10:,
-    11:, 12:, 13:,
-    14:, 15:
+    5: [3, 1, 1, 1], 6: [3, 1, 1, 1], 7: [5, 0, 1, 1],
+    8: [5, 1, 1, 1], 9: [5, 2, 1, 1], 10: [7, 0, 2, 1],
+    11: [7, 1, 2, 1], 12: [7, 2, 2, 1], 13: [9, 0, 3, 1],
+    14: [9, 1, 3, 1], 15: [9, 2, 3, 1]
   };
   
   if (lookup[n]) {
     let arr = lookup[n];
-    c = { townsfolk: arr, outsider: arr, minion: arr, demon: arr };
+    c = { townsfolk: arr[0], outsider: arr[1], minion: arr[2], demon: arr[3] };
   }
   
   document.getElementById('composition-panel').innerHTML = `
