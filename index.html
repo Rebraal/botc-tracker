@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BotC Tracker V10.6 (Local Storage)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="header-panel">
+    <button id="btn-toggle-setup" onclick="toggleSetupMode()">Lock Setup</button>
+    <button id="btn-new-game" class="danger" onclick="triggerNewGame()">New Game</button>
+    <button id="btn-next-day" onclick="triggerNextDay()">Next Day</button>
+    <span id="threshold-display">Threshold: <span id="threshold-val" style="color:#ffd700;">0</span></span>
+  </div>
+
+  <div id="game-board-container">
+    <div id="game-board">
+      <div id="center-dashboard">
+        <button id="btn-nominate" onclick="handleNominateClick()">Nominate</button>
+        <div id="composition-panel"></div>
+        <div id="dashboard-box">
+          <div id="workflow-prompt">Workflow Prompt</div>
+          <div id="notification-line">System Ready</div>
+        </div>
+      </div>
+      <div id="tokens-layer"></div>
+    </div>
+  </div>
+
+  <div id="roster-management-panel">
+    <h3>Roster Management</h3>
+    <div style="display:flex; gap:5px; margin-bottom:10px;">
+      <input type="text" id="input-player-name" placeholder="Enter player name..." autofocus>
+      <button onclick="addPlayerFromInput()">Add</button>
+    </div>
+    <div id="roster-list"></div>
+  </div>
+
+  <div id="ledger-panel">
+    <h3>Grimoire Log Ledger</h3>
+    <div id="ledger-content"></div>
+  </div>
+
+  <!-- Micro-Module Architectural Scripts Scripts -->
+  <script src="js_core.js"></script>
+  <script src="js_layout.js"></script>
+  <script src="js_life.js"></script>
+  <script src="js_nominations.js"></script>
+  <script src="js_roster.js"></script>
+  <script src="js_ledger.js"></script>
+</body>
+</html>
