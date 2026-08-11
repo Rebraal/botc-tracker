@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BotC Tracker V10.6.2</title>
+  <title>BotC Tracker V10.6.3</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
     <button id="btn-new-game" class="danger" onclick="triggerNewGame()">New Game</button>
     <button id="btn-next-day" onclick="triggerNextDay()">Next Day</button>
     <span id="threshold-display">Threshold: <span id="threshold-val" style="color:#ffd700;">0</span></span>
-    <span id="version-tag" style="color:#888; font-size:0.75rem; font-weight:bold; margin-left:5px;">V10.6.2</span>
+    <span id="version-tag" style="color:#888; font-size:0.75rem; font-weight:bold; margin-left:5px;">V10.6.3</span>
   </div>
 
   <div id="game-board-container">
@@ -22,6 +22,10 @@
         <div id="composition-panel"></div>
         <div id="dashboard-box">
           <div id="workflow-prompt">Workflow Prompt</div>
+          <div id="role-input-container" style="display:none; margin:5px 0; width:100%;">
+            <input type="text" id="input-token-role" placeholder="Enter role..." style="width:65%; font-size:0.75rem; padding:3px;">
+            <button id="btn-save-role" style="padding:3px 6px; font-size:0.75rem;">Set</button>
+          </div>
           <div id="notification-line">System Ready</div>
         </div>
       </div>
