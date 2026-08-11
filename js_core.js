@@ -6,7 +6,9 @@ let state = {
   nominationState: 'IDLE',
   activeNominator: null,
   activeNominee: null,
-  activeVoters: []
+  activeVoters: [],
+  nominatorToday: [],
+  nomineeToday: []
 };
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +40,8 @@ function loadFromLocalStorage() {
       state.players = parsed.players || [];
       state.votes = parsed.votes || [];
       state.currentDay = parsed.currentDay || 1;
+      state.nominatorToday = parsed.nominatorToday || [];
+      state.nomineeToday = parsed.nomineeToday || [];
     } catch(e) {
       updateNotification("Error reading stored cache data.");
     }
@@ -48,7 +52,9 @@ function persistData() {
   localStorage.setItem('botc_tracker_state', JSON.stringify({
     players: state.players,
     votes: state.votes,
-    currentDay: state.currentDay
+    currentDay: state.currentDay,
+    nominatorToday: state.nominatorToday,
+    nomineeToday: state.nomineeToday
   }));
   updateNotification("Data auto-saved locally.");
 }
@@ -59,12 +65,11 @@ function recalculateThresholdAndComposition() {
 
   let n = state.players.length;
   let c = { townsfolk: 0, outsider: 0, minion: 0, demon: 0 };
-  
   const lookup = {
-    5: [3, 0, 1, 1], 6: [3, 1, 1, 1], 7: [5, 0, 1, 1],
-    8: [5, 1, 1, 1], 9: [5, 2, 1, 1], 10: [7, 0, 2, 1],
-    11: [7, 1, 2, 1], 12: [7, 2, 2, 1], 13: [9, 0, 3, 1],
-    14: [9, 1, 3, 1], 15: [9, 2, 3, 1]
+    5:, 6:, 7:,
+    8:, 9:, 10:,
+    11:, 12:, 13:,
+    14:, 15: [9, 2, 3, 1]
   };
   
   if (lookup[n]) {
