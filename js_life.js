@@ -22,3 +22,4 @@ function bindLifecycleTap(element, player, idx) {
     }
   });
 }
+ 
