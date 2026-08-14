@@ -38,32 +38,49 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
   let originalIndex = currentIdx;
 
   handle.addEventListener('touchstart', (e) => {
-    startY = e.touches[0].clientY;
+    startY = e.touches.clientY;
     row.style.zIndex = "1000";
     row.style.position = "relative";
     row.style.boxShadow = "0 4px 12px rgba(0,0,0,0.6)";
   }, { passive: true });
 
   handle.addEventListener('touchmove', (e) => {
-    let currentY = e.touches[0].clientY;
+    let currentY = e.touches.clientY;
     let deltaY = currentY - startY;
     row.style.transform = `translateY(${deltaY}px)`;
 
-    let elementOver = document.elementFromPoint(e.touches[0].clientX, currentY);
-    if (!elementOver) return;
+    const movingBox = row.getBoundingClientRect();
+    const movingCenterY = movingBox.top + (movingBox.height / 2);
     
-    let targetRow = elementOver.closest('.roster-row');
-    if (targetRow && targetRow !== row) {
-      let targetIdx = parseInt(targetRow.dataset.index, 10);
-      if (!isNaN(targetIdx) && targetIdx !== originalIndex) {
-        let temp = state.players[originalIndex];
-        state.players[originalIndex] = state.players[targetIdx];
-        state.players[targetIdx] = temp;
-        originalIndex = targetIdx;
-        persistData();
-        startY = currentY;
-        renderRoster();
+    const siblingRows = Array.from(document.querySelectorAll('.roster-row'));
+    let targetIndex = originalIndex;
+    
+    for (let targetRow of siblingRows) {
+      if (targetRow === row) continue;
+      
+      const targetBox = targetRow.getBoundingClientRect();
+      const rowIdx = parseInt(targetRow.dataset.index, 10);
+      const targetMidY = targetBox.top + (targetBox.height / 2);
+      
+      // Determine if the dragged row has passed the midpoint of a sibling item
+      if (originalIndex < rowIdx && movingCenterY > targetMidY) {
+        targetIndex = rowIdx;
+      } else if (originalIndex > rowIdx && movingCenterY < targetMidY) {
+        if (targetIndex === originalIndex || rowIdx < targetIndex) {
+          targetIndex = rowIdx;
+        }
       }
+    }
+
+    if (targetIndex !== originalIndex && !isNaN(targetIndex)) {
+      // Remove item from its current slot and slice insert it cleanly into the target index
+      let [movedItem] = state.players.splice(originalIndex, 1);
+      state.players.splice(targetIndex, 0, movedItem);
+      
+      originalIndex = targetIndex;
+      persistData();
+      startY = currentY; 
+      renderRoster();
     }
   }, { passive: true });
 
