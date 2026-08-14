@@ -110,8 +110,8 @@ button.danger { background-color: #8b0000; }
 .token.dv-spent { border: 5px solid #6a0dad !important; }
 .dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #412163 30%, #11051e 100%); border-radius: 50%; opacity: 0.95; pointer-events: none; z-index: 100; }
 .player-name-plate { position: absolute; width: 100%; text-align: center; font-size: 0.75rem; font-weight: bold; pointer-events: none; z-index: 150; line-height: 1.1; word-break: break-word; padding: 0 4px; box-sizing: border-box; }
-.dot-nominator { position: absolute; top: 4px; width: 8px; height: 8px; background-color: #ff0000; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
-.dot-nominee { position: absolute; bottom: 4px; width: 8px; height: 8px; background-color: #00bfff; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
+.dot-nominator { position: absolute; top: 4px; width: 8px; height: 8px; background-color: #ff0000; border-radius: 50%; left: calc(50% - 4px); z-index: 200; }
+.dot-nominee { position: absolute; bottom: 4px; width: 8px; height: 8px; background-color: #00bfff; border-radius: 50%; left: calc(50% - 4px); z-index: 200; }
 .role-badge { position: absolute; bottom: -20px; background-color: #3a3a3a; color: #ffffff; font-size: 0.65rem; font-weight: normal; padding: 2px 5px; border-radius: 3px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.5); pointer-events: none; z-index: 5; }
 .halo-nominator { box-shadow: 0 0 15px 5px rgba(255,0,0,0.6); }
 .halo-nominee { box-shadow: 0 0 15px 5px rgba(0,191,255,0.6); }
