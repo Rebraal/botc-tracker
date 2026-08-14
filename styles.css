@@ -100,7 +100,7 @@ button.danger { background-color: #8b0000; }
   user-select: none;
 }
 .token.st {
-  background: linear-gradient(135deg, #4a154b 0%, #111 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #161616 100%);
   border: 3px solid #ffd700;
   color: #ffd700;
 }
