@@ -105,10 +105,10 @@ button.danger { background-color: #8b0000; }
   color: #ffd700;
 }
 .token.alive { background: radial-gradient(#fcf1d4, #e6cb85); color: #222; border: 2px solid #fff; }
-.token.traveler { background: linear-gradient(90deg, #add8e6, #ffcccb) !important; color: #222; }
+.token.traveler { background: linear-gradient(90deg, #00bfff 0%, #ff0000 100%) !important; color: #ffffff !important; border: 2px solid #ffffff; text-shadow: 1px 1px 3px #000; }
 .token.dv-available { border: 5px solid #ffd700 !important; }
 .token.dv-spent { border: 5px solid #6a0dad !important; }
-.dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #ebd6fa 20%, #a884cc 80%), rgba(0,0,0,0.4); border-radius: 50%; opacity: 0.85; pointer-events: none; z-index: 100; }
+.dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #412163 30%, #11051e 100%); border-radius: 50%; opacity: 0.92; pointer-events: none; z-index: 100; }
 .dot-nominator { position: absolute; top: 4px; width: 8px; height: 8px; background-color: #ff0000; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .dot-nominee { position: absolute; bottom: 4px; width: 8px; height: 8px; background-color: #00bfff; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .role-badge { position: absolute; bottom: -20px; background-color: #3a3a3a; color: #ffffff; font-size: 0.65rem; font-weight: normal; padding: 2px 5px; border-radius: 3px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.5); pointer-events: none; z-index: 5; }
