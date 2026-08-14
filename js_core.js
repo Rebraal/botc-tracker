@@ -14,6 +14,12 @@ let state = {
 window.addEventListener('DOMContentLoaded', () => {
   loadFromLocalStorage();
   setSetupMode(state.players.length === 0);
+  
+  let notesArea = document.getElementById('storyteller-notes');
+  if (notesArea) {
+    notesArea.addEventListener('input', () => { persistData(); });
+  }
+  
   syncUI();
 });
 
@@ -42,6 +48,11 @@ function loadFromLocalStorage() {
       state.currentDay = parsed.currentDay || 1;
       state.nominatorToday = parsed.nominatorToday || [];
       state.nomineeToday = parsed.nomineeToday || [];
+      
+      let notesArea = document.getElementById('storyteller-notes');
+      if (notesArea && parsed.storynotes) {
+        notesArea.value = parsed.storynotes;
+      }
     } catch(e) {
       updateNotification("Error reading stored cache data.");
     }
@@ -49,24 +60,29 @@ function loadFromLocalStorage() {
 }
 
 function persistData() {
+  let notesValue = "";
+  let notesArea = document.getElementById('storyteller-notes');
+  if (notesArea) notesValue = notesArea.value;
+
   localStorage.setItem('botc_tracker_state', JSON.stringify({
     players: state.players,
     votes: state.votes,
     currentDay: state.currentDay,
     nominatorToday: state.nominatorToday,
-    nomineeToday: state.nomineeToday
+    nomineeToday: state.nomineeToday,
+    storynotes: notesValue
   }));
   updateNotification("Data auto-saved locally.");
 }
 
 function recalculateThresholdAndComposition() {
   let aliveCount = state.players.filter(p => p.status === 'ALIVE').length;
+  document.getElementById('alive-val').innerText = aliveCount;
   document.getElementById('threshold-val').innerText = Math.ceil(aliveCount / 2);
 
-  let n = state.players.length;
+  let nonTravelerCount = state.players.filter(p => !p.traveler).length;
   let c = { townsfolk: 0, outsider: 0, minion: 0, demon: 0 };
   
-  // Official BotC Player-to-Character Map
   const lookup = {
     5: { townsfolk: 3, outsider: 0, minion: 1, demon: 1 },
     6: { townsfolk: 3, outsider: 1, minion: 1, demon: 1 },
@@ -81,9 +97,7 @@ function recalculateThresholdAndComposition() {
     15: { townsfolk: 9, outsider: 2, minion: 3, demon: 1 }
   };
   
-  if (lookup[n]) {
-    c = lookup[n];
-  }
+  if (lookup[nonTravelerCount]) c = lookup[nonTravelerCount];
   
   document.getElementById('composition-panel').innerHTML = `
     <span class="fac-t">Townsfolk: ${c.townsfolk}</span>
