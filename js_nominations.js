@@ -88,3 +88,4 @@ function triggerNextDay() {
   syncUI();
   persistData();
 }
+ 
