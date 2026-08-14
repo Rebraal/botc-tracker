@@ -107,3 +107,4 @@ function openRoleAssignPrompt(idx) {
   btn.onclick = processRoleSave;
   input.onkeydown = (e) => { if (e.key === 'Enter') processRoleSave(); };
 }
+ 
