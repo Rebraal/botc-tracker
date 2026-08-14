@@ -108,7 +108,7 @@ button.danger { background-color: #8b0000; }
 .token.traveler { background: linear-gradient(90deg, #add8e6, #ffcccb) !important; color: #222; }
 .token.dv-available { border: 5px solid #ffd700 !important; }
 .token.dv-spent { border: 5px solid #6a0dad !important; }
-.dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(#ebd6fa, #a884cc); border-radius: 50%; opacity: 0.60; pointer-events: none; z-index: 100; }
+.dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #ebd6fa 20%, #a884cc 80%), rgba(0,0,0,0.4); border-radius: 50%; opacity: 0.85; pointer-events: none; z-index: 100; }
 .dot-nominator { position: absolute; top: 4px; width: 8px; height: 8px; background-color: #ff0000; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .dot-nominee { position: absolute; bottom: 4px; width: 8px; height: 8px; background-color: #00bfff; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .role-badge { position: absolute; bottom: -20px; background-color: #3a3a3a; color: #ffffff; font-size: 0.65rem; font-weight: normal; padding: 2px 5px; border-radius: 3px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.5); pointer-events: none; z-index: 5; }
@@ -118,7 +118,7 @@ button.danger { background-color: #8b0000; }
 .skull-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,0,0,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; animation: pulse 1.5s infinite; z-index:3; }
 @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 #roster-management-panel, #ledger-panel { width: 100%; max-width: 500px; background: #222; border: 1px solid #444; border-radius: 8px; padding: 10px; margin-top: 15px; box-sizing: border-box; }
-.roster-row { display: flex; align-items: center; justify-content: space-between; padding: 6px; background: #2b2b2b; margin-bottom: 4px; border-radius: 4px; }
+.roster-row { display: flex; align-items: center; justify-content: space-between; padding: 6px; background: #2b2b2b; margin-bottom: 4px; border-radius: 4px; touch-action: none; }
 .roster-row.moving { border: 2px dashed #00bfff; background: #141414; }
 .ledger-day-header { background: #333; padding: 4px; font-weight: bold; margin-top: 8px; border-radius: 4px; }
 .ledger-row { display: flex; justify-content: space-between; align-items: center; padding: 6px; border-bottom: 1px solid #333; font-size: 0.85rem; }
