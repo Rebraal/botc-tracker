@@ -11,7 +11,8 @@ function renderLedger() {
 
   Object.keys(daysMap).sort((a,b)=>a-b).forEach(dayNum => {
     let header = document.createElement('div'); header.className = 'ledger-day-header'; header.innerText = `Day ${dayNum}`; content.appendChild(header);
-    let threshold = Math.ceil(state.players.filter(p => p.status === 'ALIVE').length / 2);
+    let aliveCountAtDay = state.players.filter(p => p.status === 'ALIVE').length; 
+    let threshold = Math.ceil(aliveCountAtDay / 2);
     let maxVotes = -1, leaderId = -1, tie = false;
 
     daysMap[dayNum].forEach(item => {
