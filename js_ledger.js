@@ -48,3 +48,4 @@ function deleteLedgerEntry(globalIdx) {
   syncUI();
   persistData();
 }
+ 
