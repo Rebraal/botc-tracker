@@ -50,7 +50,6 @@ function getRectangularPosition(dist, rw, rh, offsetLeft, offsetTop) {
 }
 
 function configurePlayerTokenNode(div, p, idx) {
-  div.innerText = p.name;
   div.classList.add('alive');
   if (p.status === 'DEAD') div.classList.add(!p.deadVoteUsed ? 'dv-available' : 'dv-spent');
   if (p.traveler) div.classList.add('traveler');
@@ -79,13 +78,20 @@ function configurePlayerTokenNode(div, p, idx) {
     let shield = document.createElement('div');
     shield.className = 'dead-overlay-shield';
     div.appendChild(shield);
-    // Explicit high-contrast canvas overrides for dark background filters
-    div.style.color = '#ffffff';
-    div.style.textShadow = '2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000';
-  } else {
-    div.style.textShadow = '';
-    if (!p.traveler) div.style.color = '';
   }
+
+  // High-priority Text Node Placed At Final Layer Level (Z-INDEX 150)
+  let namePlate = document.createElement('div');
+  namePlate.className = 'player-name-plate';
+  namePlate.innerText = p.name;
+  
+  if (p.status === 'DEAD') {
+    namePlate.style.color = '#ffffff';
+    namePlate.style.textShadow = '2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000';
+  } else if (!p.traveler) {
+    div.style.color = '#222';
+  }
+  div.appendChild(namePlate);
 
   div.addEventListener('click', () => handleTokenClick(p, idx));
   div.addEventListener('dblclick', (e) => { e.preventDefault(); openRoleAssignPrompt(idx); });
