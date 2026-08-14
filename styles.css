@@ -34,7 +34,6 @@ button {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 button.danger { background-color: #8b0000; }
-#threshold-display { font-weight: bold; font-size: 0.95rem; }
 #game-board-container {
   width: 100%;
   max-width: 500px;
@@ -58,7 +57,7 @@ button.danger { background-color: #8b0000; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   z-index: 10;
 }
 #composition-panel {
@@ -106,10 +105,10 @@ button.danger { background-color: #8b0000; }
   color: #ffd700;
 }
 .token.alive { background: radial-gradient(#fcf1d4, #e6cb85); color: #222; border: 2px solid #fff; }
-.token.dead { background: radial-gradient(#ebd6fa, #a884cc); color: #222; opacity: 0.85; border: 2px solid #999; }
 .token.traveler { background: linear-gradient(90deg, #add8e6, #ffcccb) !important; color: #222; }
 .token.dv-available { border: 5px solid #ffd700 !important; }
 .token.dv-spent { border: 5px solid #6a0dad !important; }
+.dead-overlay-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(#ebd6fa, #a884cc); border-radius: 50%; opacity: 0.60; pointer-events: none; z-index: 100; }
 .dot-nominator { position: absolute; top: 4px; width: 8px; height: 8px; background-color: #ff0000; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .dot-nominee { position: absolute; bottom: 4px; width: 8px; height: 8px; background-color: #00bfff; border-radius: 50%; left: calc(50% - 4px); z-index: 4; }
 .role-badge { position: absolute; bottom: -20px; background-color: #3a3a3a; color: #ffffff; font-size: 0.65rem; font-weight: normal; padding: 2px 5px; border-radius: 3px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.5); pointer-events: none; z-index: 5; }
