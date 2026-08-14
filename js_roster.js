@@ -3,18 +3,15 @@ let activeMoveIndex = null;
 function renderRoster() {
   const list = document.getElementById('roster-list');
   list.innerHTML = '';
-  
   state.players.forEach((p, idx) => {
     let row = document.createElement('div');
     row.className = 'roster-row';
     row.dataset.index = idx;
     if (activeMoveIndex === idx) row.classList.add('moving');
-    
     row.onclick = (e) => {
       if (e.target.tagName === 'SPAN' || e.target.classList.contains('drag-handle')) return;
       handleRowSelectAction(idx);
     };
-
     row.innerHTML = `
       <div style="display:flex; align-items:center; gap:8px; width:60%; pointer-events:none;">
         <span class="drag-handle" style="cursor:grab; padding:4px 8px; background:#444; border-radius:3px; user-select:none; pointer-events:auto;">☰</span>
@@ -25,7 +22,6 @@ function renderRoster() {
         <span style="cursor:pointer;" onclick="deletePlayerRow(${idx})">🗑️</span>
       </div>
     `;
-
     let handle = row.querySelector('.drag-handle');
     bindMobileRowTouchDragMechanics(handle, row, idx);
     list.appendChild(row);
@@ -34,61 +30,55 @@ function renderRoster() {
 }
 
 function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
-  let startY = 0;
-  let originalIndex = currentIdx;
+  let startY = 0, currentTargetIdx = currentIdx;
+  let rowHeight = 0, siblings = [];
 
   handle.addEventListener('touchstart', (e) => {
-    startY = e.touches.clientY;
+    startY = e.touches[0].clientY;
+    currentTargetIdx = currentIdx;
+    rowHeight = row.offsetHeight + 4; // Bounding height including margins
     row.style.zIndex = "1000";
-    row.style.position = "relative";
-    row.style.boxShadow = "0 4px 12px rgba(0,0,0,0.6)";
+    row.style.boxShadow = "0 6px 14px rgba(0,0,0,0.6)";
+    row.style.transition = "none";
+    siblings = Array.from(document.querySelectorAll('.roster-row')).filter(s => s !== row);
+    siblings.forEach(s => s.style.transition = "transform 0.2s ease");
   }, { passive: true });
 
   handle.addEventListener('touchmove', (e) => {
-    let currentY = e.touches.clientY;
+    let currentY = e.touches[0].clientY;
     let deltaY = currentY - startY;
     row.style.transform = `translateY(${deltaY}px)`;
 
-    const movingBox = row.getBoundingClientRect();
-    const movingCenterY = movingBox.top + (movingBox.height / 2);
-    
-    const siblingRows = Array.from(document.querySelectorAll('.roster-row'));
-    let targetIndex = originalIndex;
-    
-    for (let targetRow of siblingRows) {
-      if (targetRow === row) continue;
-      
-      const targetBox = targetRow.getBoundingClientRect();
-      const rowIdx = parseInt(targetRow.dataset.index, 10);
-      const targetMidY = targetBox.top + (targetBox.height / 2);
-      
-      // Determine if the dragged row has passed the midpoint of a sibling item
-      if (originalIndex < rowIdx && movingCenterY > targetMidY) {
-        targetIndex = rowIdx;
-      } else if (originalIndex > rowIdx && movingCenterY < targetMidY) {
-        if (targetIndex === originalIndex || rowIdx < targetIndex) {
-          targetIndex = rowIdx;
-        }
-      }
+    let calculatedOffsetIndex = Math.round(deltaY / rowHeight);
+    let newTargetIdx = currentIdx + calculatedOffsetIndex;
+    newTargetIdx = Math.max(0, Math.min(newTargetIdx, state.players.length - 1));
+
+    if (newTargetIdx !== currentTargetIdx) {
+      currentTargetIdx = newTargetIdx;
     }
 
-    if (targetIndex !== originalIndex && !isNaN(targetIndex)) {
-      // Remove item from its current slot and slice insert it cleanly into the target index
-      let [movedItem] = state.players.splice(originalIndex, 1);
-      state.players.splice(targetIndex, 0, movedItem);
-      
-      originalIndex = targetIndex;
-      persistData();
-      startY = currentY; 
-      renderRoster();
-    }
+    // Visually shift the other entries up/down to reveal the injection gap
+    siblings.forEach(sibling => {
+      let sIdx = parseInt(sibling.dataset.index, 10);
+      if (currentIdx < sIdx && sIdx <= currentTargetIdx) {
+        sibling.style.transform = `translateY(-${rowHeight}px)`;
+      } else if (currentIdx > sIdx && sIdx >= currentTargetIdx) {
+        sibling.style.transform = `translateY(${rowHeight}px)`;
+      } else {
+        sibling.style.transform = "";
+      }
+    });
   }, { passive: true });
 
   handle.addEventListener('touchend', () => {
-    row.style.zIndex = "";
-    row.style.position = "";
-    row.style.boxShadow = "";
-    row.style.transform = "";
+    row.style.zIndex = ""; row.style.boxShadow = ""; row.style.transform = "";
+    siblings.forEach(s => { s.style.transition = ""; s.style.transform = ""; });
+    
+    if (currentTargetIdx !== currentIdx && !isNaN(currentTargetIdx)) {
+      let [movedItem] = state.players.splice(currentIdx, 1);
+      state.players.splice(currentTargetIdx, 0, movedItem);
+      persistData();
+    }
     syncUI();
   });
 }
