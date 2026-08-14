@@ -51,32 +51,34 @@ function getRectangularPosition(dist, rw, rh, offsetLeft, offsetTop) {
 
 function configurePlayerTokenNode(div, p, idx) {
   div.innerText = p.name;
-  div.classList.add(p.status === 'ALIVE' ? 'alive' : 'dead');
+  div.classList.add('alive');
   if (p.status === 'DEAD') div.classList.add(!p.deadVoteUsed ? 'dv-available' : 'dv-spent');
   if (p.traveler) div.classList.add('traveler');
 
-  // Persistent Nominator Tracker Dots
   if (state.nominatorToday.includes(p.name) || state.activeNominator === p.name) {
     let d = document.createElement('div'); d.className = 'dot-nominator'; div.appendChild(d);
   }
-  // Persistent Nominee Tracker Dots
   if (state.nomineeToday.includes(p.name) || state.activeNominee === p.name) {
     let d = document.createElement('div'); d.className = 'dot-nominee'; div.appendChild(d);
   }
 
-  // Live Voting Nomination Halo Run Profiles
   if (state.nominationState !== 'IDLE') {
     if (state.activeNominator === p.name) div.classList.add('halo-nominator');
     if (state.activeNominee === p.name) div.classList.add('halo-nominee');
     if (state.activeVoters.includes(p.name)) div.classList.add('halo-voter');
   }
 
-  // Inline Optional Role Badge Display Row
   if (p.role) {
     let rBadge = document.createElement('div');
     rBadge.className = 'role-badge';
     rBadge.innerText = p.role;
     div.appendChild(rBadge);
+  }
+
+  if (p.status === 'DEAD') {
+    let shield = document.createElement('div');
+    shield.className = 'dead-overlay-shield';
+    div.appendChild(shield);
   }
 
   div.addEventListener('click', () => handleTokenClick(p, idx));
