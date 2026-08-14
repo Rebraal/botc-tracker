@@ -36,7 +36,6 @@ function handleTokenClick(player, idx) {
 }
 
 function handleNominateClickEnd() {
-  // Capture historical track flags into persistent daily cache blocks before wipeout
   if (state.activeNominator && !state.nominatorToday.includes(state.activeNominator)) {
     state.nominatorToday.push(state.activeNominator);
   }
@@ -60,7 +59,8 @@ function handleNominateClickEnd() {
 
 function evaluateBlockLeader() {
   let dayVotes = state.votes.filter(v => v.day === state.currentDay);
-  let threshold = Math.ceil(state.players.filter(p => p.status === 'ALIVE').length / 2);
+  let aliveCount = state.players.filter(p => p.status === 'ALIVE').length;
+  let threshold = Math.ceil(aliveCount / 2);
   let maxVotes = -1, leaderNominee = null, tie = false;
 
   dayVotes.forEach(v => {
