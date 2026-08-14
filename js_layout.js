@@ -79,6 +79,12 @@ function configurePlayerTokenNode(div, p, idx) {
     let shield = document.createElement('div');
     shield.className = 'dead-overlay-shield';
     div.appendChild(shield);
+    // Explicit high-contrast canvas overrides for dark background filters
+    div.style.color = '#ffffff';
+    div.style.textShadow = '2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000';
+  } else {
+    div.style.textShadow = '';
+    if (!p.traveler) div.style.color = '';
   }
 
   div.addEventListener('click', () => handleTokenClick(p, idx));
@@ -107,4 +113,3 @@ function openRoleAssignPrompt(idx) {
   btn.onclick = processRoleSave;
   input.onkeydown = (e) => { if (e.key === 'Enter') processRoleSave(); };
 }
- 
