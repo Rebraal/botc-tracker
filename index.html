@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BotC Tracker V10.6.7</title>
+  <title>BotC Tracker V10.6.12</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,8 +12,7 @@
     <button id="btn-restart-game" onclick="triggerRestartGame()">Restart Game</button>
     <button id="btn-new-game" class="danger" onclick="triggerNewGame()">New Game</button>
     <button id="btn-next-day" onclick="triggerNextDay()">Next Day</button>
-    <span id="threshold-display">Threshold: <span id="threshold-val" style="color:#ffd700;">0</span></span>
-    <span id="version-tag" style="color:#888; font-size:0.75rem; font-weight:bold; margin-left:5px;">V10.6.7</span>
+    <span id="version-tag" style="color:#888; font-size:0.75rem; font-weight:bold; margin-left:5px;">V10.6.12</span>
   </div>
 
   <div id="game-board-container">
@@ -21,6 +20,10 @@
       <div id="center-dashboard">
         <button id="btn-nominate" onclick="handleNominateClick()">Nominate</button>
         <div id="composition-panel"></div>
+        <div id="live-stats-panel" style="font-size:0.8rem; font-weight:bold; text-align:center; color:#fff; display:flex; flex-direction:column; gap:2px; margin-top:2px;">
+          <span id="alive-count-display">Players Alive: <span id="alive-val" style="color:#00ff66;">0</span></span>
+          <span id="threshold-display">Threshold: <span id="threshold-val" style="color:#ffd700;">0</span></span>
+        </div>
         <div id="dashboard-box">
           <div id="workflow-prompt">Workflow Prompt</div>
           <div id="role-input-container" style="display:none; margin:5px 0; width:100%;">
@@ -43,6 +46,11 @@
     <div id="roster-list"></div>
   </div>
 
+  <div id="notes-panel" style="width:100%; max-width:500px; background:#222; border:1px solid #444; border-radius:8px; padding:10px; margin-top:15px; box-sizing:border-box;">
+    <h3>Storyteller Notes</h3>
+    <textarea id="storyteller-notes" placeholder="Type night actions, custom bluffs, or reminders here..." style="width:100%; height:100px; background:#141414; color:#fff; border:1px solid #444; border-radius:4px; padding:8px; font-family:inherit; font-size:0.85rem; box-sizing:border-box; resize:vertical;"></textarea>
+  </div>
+
   <div id="ledger-panel">
     <h3>Grimoire Log Ledger</h3>
     <div id="ledger-content"></div>
@@ -57,4 +65,3 @@
   <script src="js_ledger.js"></script>
 </body>
 </html>
-
