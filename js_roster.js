@@ -42,7 +42,7 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
   let rowHeight = 0, siblings = [];
 
   handle.addEventListener('touchstart', (e) => {
-    startY = e.touches.clientY;
+    startY = e.touches[0].clientY;
     currentTargetIdx = currentIdx;
     rowHeight = row.offsetHeight + 4;
     row.style.zIndex = "1000";
@@ -50,10 +50,12 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
     row.style.transition = "none";
     siblings = Array.from(document.querySelectorAll('.roster-row')).filter(s => s !== row);
     siblings.forEach(s => s.style.transition = "transform 0.2s ease");
-  }, { passive: true });
+    document.body.style.overflow = "hidden"; // Freeze page bounce during drag
+  }, { passive: false });
 
   handle.addEventListener('touchmove', (e) => {
-    let currentY = e.touches.clientY;
+    e.preventDefault(); // Lock down phone's default text/page scroll event
+    let currentY = e.touches[0].clientY;
     let deltaY = currentY - startY;
     row.style.transform = `translateY(${deltaY}px)`;
 
@@ -69,10 +71,11 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
       else if (currentIdx > sIdx && sIdx >= currentTargetIdx) sibling.style.transform = `translateY(${rowHeight}px)`;
       else sibling.style.transform = "";
     });
-  }, { passive: true });
+  }, { passive: false });
 
   handle.addEventListener('touchend', () => {
     row.style.zIndex = ""; row.style.boxShadow = ""; row.style.transform = ""; siblings.forEach(s => { s.style.transition = ""; s.style.transform = ""; });
+    document.body.style.overflow = ""; // Re-enable background scrolling
     if (currentTargetIdx !== currentIdx && !isNaN(currentTargetIdx)) {
       let [movedItem] = state.players.splice(currentIdx, 1);
       state.players.splice(currentTargetIdx, 0, movedItem);
