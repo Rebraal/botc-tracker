@@ -61,6 +61,95 @@ function configurePlayerTokenNode(div, p, idx) {
     let d = document.createElement('div'); d.className = 'dot-nominee'; div.appendChild(d);
   }
 
+  // Multi-day historical tag calculation blocks
+  let activeNdays = [];
+  let activeVdays = [];
+  
+  state.toggledDayNVInfo.forEach(dNum => {
+    let dayVotes = state.votes.filter(v => v.day === dNum);
+    let didNominate = dayVotes.some(v => v.nominator === p.name);
+    let didVote = dayVotes.some(v => v.voters.includes(p.name));
+    if (didNominate) activeNdays.push(`N${dNum}`);
+    if (didVote) activeVdays.push(`V${dNum}`);
+  });
+
+  if (activeNdays.length > 0) {
+    let badge = document.createElement('div'); badge.className = 'nv-badge-left';
+    badge.innerText = activeNdays.join(','); div.appendChild(badge);
+  }
+  if (activeVdays.length > 0) {
+    let badge = document.createElement('div'); badge.className = 'nv-badge-right';
+    badge.innerText = activeVdays.join(','); div.appendChild(badge);
+  }
+
+  if (state.nominationState !== 'IDLE') {
+    if (state.activeNominator === p.name) div.classList.add('halo-nominator');
+    if (state.activeNominee === p.name) div.classList.add('halo-nominee');
+    if (state.activeVoters.includes(p.name)) div.classList.add('halo-voter');
+  }
+
+  if (p.role) {
+    let rBadge = document.createElement('div'); rBadge.className = 'role-badge';
+    rBadge.innerText = p.role; div.appendChild(rBadge);
+  }
+
+  if (p.status === 'DEAD') {
+    let shield = document.createElement('div'); shield.className = 'dead-overlay-shield';
+    div.appendChild(shield);
+  }
+
+  let namePlate = document.createElement('div'); namePlate.className = 'player-name-plate';
+  namePlate.innerText = p.name;
+  if (p.status === 'DEAD') {
+    namePlate.style.color = '#ffffff';
+    namePlate.style.textShadow = '2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000';
+  } else if (!p.traveler) {
+    div.style.color = '#222';
+  }
+  div.appendChild(namePlate);
+
+  div.addEventListener('click', () => handleTokenClick(p, idx));
+  div.addEventListener('dblclick', (e) => { e.preventDefault(); openRoleAssignPrompt(idx); });
+  div.addEventListener('contextmenu', (e) => { e.preventDefault(); handleTokenLongPress(p, idx); });
+  bindLifecycleTap(div, p, idx);
+}
+
+function openRoleAssignPrompt(idx) {
+  let p = state.players[idx];
+  let container = document.getElementById('role-input-container');
+  let input = document.getElementById('input-token-role');
+  let btn = document.getElementById('btn-save-role');
+  container.style.display = 'block'; input.value = p.role || ''; input.focus();
+  const processRoleSave = () => { p.role = input.value.trim(); container.style.display = 'none'; syncUI(); persistData(); };
+  btn.onclick = processRoleSave; input.onkeydown = (e) => { if (e.key === 'Enter') processRoleSave(); };
+}
+function getRectangularPosition(dist, rw, rh, offsetLeft, offsetTop) {
+  let halfW = rw / 2;
+  let perimeter = 2 * (rw + rh);
+  dist = dist % perimeter;
+  let x = 0, y = 0;
+  let sBottom = halfW + rh, sLeft = halfW + rh + rw, sTopLeft = halfW + rh + rw + rh;
+
+  if (dist >= 0 && dist < halfW) { x = halfW + dist; y = 0; }
+  else if (dist >= halfW && dist < sBottom) { x = rw; y = dist - halfW; }
+  else if (dist >= sBottom && dist < sLeft) { x = rw - (dist - sBottom); y = rh; }
+  else if (dist >= sLeft && dist < sTopLeft) { x = 0; y = rh - (dist - sLeft); }
+  else { x = dist - sTopLeft; y = 0; }
+  return { x: x + offsetLeft, y: y + offsetTop };
+}
+
+function configurePlayerTokenNode(div, p, idx) {
+  div.classList.add('alive');
+  if (p.status === 'DEAD') div.classList.add(!p.deadVoteUsed ? 'dv-available' : 'dv-spent');
+  if (p.traveler) div.classList.add('traveler');
+
+  if (state.nominatorToday.includes(p.name) || state.activeNominator === p.name) {
+    let d = document.createElement('div'); d.className = 'dot-nominator'; div.appendChild(d);
+  }
+  if (state.nomineeToday.includes(p.name) || state.activeNominee === p.name) {
+    let d = document.createElement('div'); d.className = 'dot-nominee'; div.appendChild(d);
+  }
+
   if (state.nominationState !== 'IDLE') {
     if (state.activeNominator === p.name) div.classList.add('halo-nominator');
     if (state.activeNominee === p.name) div.classList.add('halo-nominee');
