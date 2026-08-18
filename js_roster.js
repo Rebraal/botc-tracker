@@ -34,9 +34,9 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
   let rowHeight = 0, siblings = [];
 
   handle.addEventListener('touchstart', (e) => {
-    startY = e.touches[0].clientY;
+    startY = e.touches.clientY;
     currentTargetIdx = currentIdx;
-    rowHeight = row.offsetHeight + 4; // Bounding height including margins
+    rowHeight = row.offsetHeight + 4;
     row.style.zIndex = "1000";
     row.style.boxShadow = "0 6px 14px rgba(0,0,0,0.6)";
     row.style.transition = "none";
@@ -45,7 +45,7 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
   }, { passive: true });
 
   handle.addEventListener('touchmove', (e) => {
-    let currentY = e.touches[0].clientY;
+    let currentY = e.touches.clientY;
     let deltaY = currentY - startY;
     row.style.transform = `translateY(${deltaY}px)`;
 
@@ -53,11 +53,8 @@ function bindMobileRowTouchDragMechanics(handle, row, currentIdx) {
     let newTargetIdx = currentIdx + calculatedOffsetIndex;
     newTargetIdx = Math.max(0, Math.min(newTargetIdx, state.players.length - 1));
 
-    if (newTargetIdx !== currentTargetIdx) {
-      currentTargetIdx = newTargetIdx;
-    }
+    if (newTargetIdx !== currentTargetIdx) currentTargetIdx = newTargetIdx;
 
-    // Visually shift the other entries up/down to reveal the injection gap
     siblings.forEach(sibling => {
       let sIdx = parseInt(sibling.dataset.index, 10);
       if (currentIdx < sIdx && sIdx <= currentTargetIdx) {
@@ -108,9 +105,13 @@ function toggleTravelerStatus(idx) { state.players[idx].traveler = !state.player
 
 function triggerRestartGame() {
   state.votes = []; state.currentDay = 1; state.nominatorToday = []; state.nomineeToday = [];
-  state.players.forEach(p => { p.status = 'ALIVE'; p.deadVoteUsed = false; });
+  state.players.forEach(p => { 
+    p.status = 'ALIVE'; 
+    p.deadVoteUsed = false; 
+    p.role = ""; // Clears assigned character roles on restart
+  });
   if (typeof resetNominationState === 'function') resetNominationState();
-  updateNotification("Game restarted. Roster kept, data reset."); syncUI(); persistData();
+  updateNotification("Game restarted. Roster kept, data and roles reset."); syncUI(); persistData();
 }
 
 function triggerNewGame() {
