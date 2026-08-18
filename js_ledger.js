@@ -93,18 +93,3 @@ function deleteLedgerEntry(globalIdx) {
   syncUI();
   persistData();
 }
-      deleteIcon.onclick = () => { deleteLedgerEntry(item.id); };
-
-      row.appendChild(leftInfo);
-      row.appendChild(deleteIcon);
-      content.appendChild(row);
-    });
-  });
-}
-
-function deleteLedgerEntry(globalIdx) {
-  state.votes.splice(globalIdx, 1);
-  syncUI();
-  persistData();
-}
- 
