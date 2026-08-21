@@ -1,3 +1,5 @@
+https://rebraal.github.io/botc-tracker/
+
 This is a tracker for Blood on the Clocktower
 
 Add players, and use lock / edit setup to exit / enter player setup. You can drag & drop or click and swap players. T for traveler, trash can to delete. 
