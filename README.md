@@ -8,6 +8,8 @@ Kill / resurrect a player by pushing and holding their token. For Bishop shenani
 
 Click Nominate to start a nomination. Click nominator (red dot & halo), then their target (blue dot & halo), then click to toggle all who vote (green halo). Finally, click end nomination. This gets stored in the ledger underneath, which can be deleted (trash can).
 
+Click Next Day at the end of the day. 
+
 In the ledger, click N/V next to a night to toggle Nomination and Vote info. If a player has nominated / voted at least once, they have a red nomination / blue vote (probably need to change this to green) tag above their token. 
 
 Info can be recorded as a note
