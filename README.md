@@ -6,7 +6,7 @@ Roles can be stored underneath players by double clicking / tapping on their tok
 
 Kill / resurrect a player by pushing and holding their token. For Bishop shenanigans, you'll have to kill & resurrect to reset their dead vote. All kills must be manually input. 
 
-Click Nominate to start a nomination. Click nominator (red dot & halo), then their target (blue dot & halo), then click to toggle all who vote (green halo). Finally, click end nomination. This gets stored in the ledger underneath, which can be deleted (trash can).
+Click Nominate to start a nomination. Click the nominator's token (they get a red dot & halo), then their target's token (blue dot & halo), then click tokens to toggle all who vote (green halo). Finally, click End Nomination. This gets stored in the ledger underneath, which can be deleted (trash can).
 
 Click Next Day at the end of the day. 
 
